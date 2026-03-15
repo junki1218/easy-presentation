@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>カン♪タン♪セン♫デン！</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+/* ============================================================
+   DEEP NIGHT NEON — カン♪タン♪プレゼン
+   ============================================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;width:100%;overflow:hidden;font-family:'Noto Sans JP',sans-serif;background:#050510;color:#e0f0ff;touch-action:manipulation}
+#app{width:100%;height:100%;position:relative;overflow:hidden}
+
+:root{
+  --c:  #00f5ff;   /* シアン */
+  --m:  #ff00aa;   /* マゼンタ */
+  --y:  #ffe600;   /* イエロー */
+  --g:  #00ff88;   /* グリーン */
+  --bg: #050510;
+  --bg2:#0a0a1e;
+  --panel:rgba(10,10,30,0.85);
+  --r:16px;--rs:10px;
+  --gc: 0 0 8px var(--c), 0 0 24px var(--c), 0 0 48px rgba(0,245,255,.4);
+  --gm: 0 0 8px var(--m), 0 0 24px var(--m), 0 0 48px rgba(255,0,170,.4);
+  --gy: 0 0 8px var(--y), 0 0 24px var(--y), 0 0 48px rgba(255,230,0,.4);
+  --gg: 0 0 8px var(--g), 0 0 24px var(--g), 0 0 48px rgba(0,255,136,.4);
+}
+
+/* ---- グリッド背景 ---- */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(0,245,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,.04) 1px, transparent 1px);
+  background-size:40px 40px;
+}
+/* ---- 流れる光のライン ---- */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    linear-gradient(105deg,transparent 40%,rgba(0,245,255,.03) 50%,transparent 60%),
+    linear-gradient(75deg,transparent 40%,rgba(255,0,170,.03) 50%,transparent 60%);
+  animation:scanline 8s linear infinite;
+}
+@keyframes scanline{from{background-position:0 0,0 0}to{background-position:200% 0,200% 0}}
+
+/* ---- 共通スクリーン ---- */
+.screen{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;background:transparent;position:absolute;top:0;left:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;z-index:1}
+.screen::-webkit-scrollbar{display:none}
+
+/* ---- ネオンボタン共通 ---- */
+.btn{
+  min-width:64px;min-height:64px;padding:12px 28px;
+  border-radius:var(--r);font-family:'Noto Sans JP',sans-serif;font-size:1.05rem;font-weight:700;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  user-select:none;-webkit-user-select:none;
+  transition:box-shadow .2s, transform .12s, background .2s;
+  position:relative;overflow:hidden;letter-spacing:.05em;
+}
+.btn:active{transform:scale(0.93)}
+/* ネオン枠ボタン（シアン） */
+.btn-neon-c{
+  background:rgba(0,245,255,.08);color:var(--c);
+  border:2px solid var(--c);
+  box-shadow:0 0 10px rgba(0,245,255,.4),inset 0 0 10px rgba(0,245,255,.08);
+}
+.btn-neon-c:active{box-shadow:var(--gc),inset 0 0 20px rgba(0,245,255,.15);background:rgba(0,245,255,.18)}
+/* ネオン枠ボタン（マゼンタ） */
+.btn-neon-m{
+  background:rgba(255,0,170,.08);color:var(--m);
+  border:2px solid var(--m);
+  box-shadow:0 0 10px rgba(255,0,170,.4),inset 0 0 10px rgba(255,0,170,.08);
+}
+.btn-neon-m:active{box-shadow:var(--gm),inset 0 0 20px rgba(255,0,170,.15);background:rgba(255,0,170,.18)}
+/* ネオン枠ボタン（イエロー） */
+.btn-neon-y{
+  background:rgba(255,230,0,.08);color:var(--y);
+  border:2px solid var(--y);
+  box-shadow:0 0 10px rgba(255,230,0,.4),inset 0 0 10px rgba(255,230,0,.08);
+}
+.btn-neon-y:active{box-shadow:var(--gy),inset 0 0 20px rgba(255,230,0,.15);background:rgba(255,230,0,.18)}
+/* ネオン枠ボタン（グリーン） */
+.btn-neon-g{
+  background:rgba(0,255,136,.08);color:var(--g);
+  border:2px solid var(--g);
+  box-shadow:0 0 10px rgba(0,255,136,.4),inset 0 0 10px rgba(0,255,136,.08);
+}
+.btn-neon-g:active{box-shadow:var(--gg),inset 0 0 20px rgba(0,255,136,.15);background:rgba(0,255,136,.18)}
+/* ゴーストボタン */
+.btn-ghost{background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.2);box-shadow:none}
+.btn-ghost:active{background:rgba(255,255,255,.12)}
+/* ソリッド塗りボタン（スタート画面など） */
+.btn-solid-c{background:var(--c);color:#050510;border:none;box-shadow:var(--gc);font-weight:900}
+.btn-solid-c:active{box-shadow:0 0 4px var(--c);transform:scale(.95)}
+
+/* ---- アニメーション ---- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes popIn{0%{transform:scale(0);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}15%{transform:translateX(-8px) rotate(-1.5deg)}30%{transform:translateX(8px) rotate(1.5deg)}45%{transform:translateX(-5px)}60%{transform:translateX(5px)}80%{transform:translateX(-2px)}}
+@keyframes floatIn{from{transform:scale(2.0);opacity:.3}to{transform:scale(1);opacity:1}}
+@keyframes bounce{0%,100%{transform:scale(1)}40%{transform:scale(1.2) translateY(-6px)}70%{transform:scale(1.05)}}
+@keyframes neonPulse{0%,100%{opacity:1}50%{opacity:.65}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes confettiFall{from{transform:translateY(-20px) rotate(0deg);opacity:1}to{transform:translateY(110vh) rotate(720deg);opacity:.2}}
+@keyframes titleGlow{0%,100%{text-shadow:0 0 10px var(--c),0 0 30px var(--c),0 0 60px rgba(0,245,255,.5)}50%{text-shadow:0 0 20px var(--c),0 0 60px var(--c),0 0 100px rgba(0,245,255,.8),0 0 4px #fff}}
+@keyframes rotateTip{0%,100%{transform:rotate(0deg)}40%,60%{transform:rotate(90deg)}}
+
+/* ===================================================
+   1. スタート画面
+   =================================================== */
+#start-screen{justify-content:center;background:var(--bg)}
+
+/* コーナー装飾 */
+.neon-corner{position:absolute;width:80px;height:80px;pointer-events:none;opacity:.7}
+.neon-corner.tl{top:16px;left:16px;border-top:2px solid var(--c);border-left:2px solid var(--c);box-shadow:-2px -2px 12px rgba(0,245,255,.5),inset -2px -2px 12px rgba(0,245,255,.1)}
+.neon-corner.tr{top:16px;right:16px;border-top:2px solid var(--m);border-right:2px solid var(--m);box-shadow:2px -2px 12px rgba(255,0,170,.5),inset 2px -2px 12px rgba(255,0,170,.1)}
+.neon-corner.bl{bottom:16px;left:16px;border-bottom:2px solid var(--m);border-left:2px solid var(--m);box-shadow:-2px 2px 12px rgba(255,0,170,.5)}
+.neon-corner.br{bottom:16px;right:16px;border-bottom:2px solid var(--c);border-right:2px solid var(--c);box-shadow:2px 2px 12px rgba(0,245,255,.5)}
+
+.start-title-wrap{text-align:center;margin-bottom:52px;animation:fadeUp .8s ease both}
+.start-sub{font-size:.8rem;letter-spacing:.3em;color:var(--c);opacity:.7;margin-bottom:12px;font-family:'Orbitron',sans-serif;animation:neonPulse 3s ease-in-out infinite}
+.start-title{
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:clamp(1.8rem,7vw,3rem);font-weight:900;
+  color:#fff;line-height:1.25;
+  animation:titleGlow 3s ease-in-out infinite;
+}
+.start-title span{color:var(--c)}
+
+.start-btn-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;animation:fadeUp .8s .2s ease both}
+.start-btn-wrap .btn{width:min(300px,82vw);height:72px;font-size:1.25rem}
+
+/* ===================================================
+   2. 設定画面
+   =================================================== */
+#settings-screen{align-items:stretch;background:var(--bg)}
+.pane-header{
+  display:flex;align-items:center;gap:12px;padding:18px 22px 14px;
+  background:rgba(0,0,0,.6);
+  border-bottom:1px solid rgba(0,245,255,.2);
+  position:sticky;top:0;z-index:10;
+  backdrop-filter:blur(12px);
+}
+.pane-header h2{font-size:1.25rem;font-weight:900;color:var(--c);flex:1;text-shadow:0 0 12px var(--c);letter-spacing:.05em}
+.pane-header .btn{min-height:52px;padding:8px 20px;font-size:.95rem}
+.pane-body{padding:20px;display:flex;flex-direction:column;gap:22px;padding-bottom:60px;width:100%}
+
+.section-card{
+  background:var(--panel);
+  border:1px solid rgba(0,245,255,.15);
+  border-radius:var(--r);padding:20px;
+  box-shadow:0 0 20px rgba(0,245,255,.05),inset 0 0 30px rgba(0,0,0,.3);
+}
+.section-card h3{
+  font-size:.95rem;font-weight:700;margin-bottom:14px;
+  color:var(--c);letter-spacing:.08em;
+  display:flex;align-items:center;gap:10px;
+  text-shadow:0 0 8px var(--c);
+}
+.section-card h3::before{content:'//';font-family:'Orbitron',sans-serif;font-size:.75rem;opacity:.7}
+
+/* トグル */
+.toggle-wrap{display:flex;align-items:center;gap:14px}
+.toggle-label{font-size:.95rem;font-weight:700;color:rgba(255,255,255,.7)}
+.toggle-sw{position:relative;width:64px;height:32px;flex-shrink:0}
+.toggle-sw input{display:none}
+.toggle-sl{position:absolute;inset:0;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:16px;cursor:pointer;transition:.3s}
+.toggle-sl::after{content:'';position:absolute;width:24px;height:24px;left:4px;top:4px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 0 6px rgba(0,0,0,.4)}
+.toggle-sw input:checked+.toggle-sl{background:rgba(0,245,255,.15);border-color:var(--c);box-shadow:0 0 12px rgba(0,245,255,.4)}
+.toggle-sw input:checked+.toggle-sl::after{left:36px;background:var(--c);box-shadow:0 0 10px var(--c)}
+
+/* リアクションチップ */
+.reaction-chips{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,0,170,.08);
+  border:1px solid var(--m);border-radius:50px;
+  padding:7px 12px;font-size:.9rem;font-weight:700;
+  color:var(--m);min-height:48px;
+  box-shadow:0 0 8px rgba(255,0,170,.2);
+}
+.chip-del{
+  width:20px;height:20px;background:var(--m);color:#050510;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:12px;cursor:pointer;border:none;font-family:inherit;
+  transition:transform .15s,box-shadow .15s;box-shadow:0 0 6px var(--m);
+}
+.chip-del:active{transform:scale(.8)}
+
+.add-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.setting-select{
+  height:52px;padding:8px 14px;
+  border-radius:var(--rs);
+  border:1px solid rgba(0,245,255,.3);
+  font-family:inherit;font-size:.95rem;
+  background:rgba(0,245,255,.05);
+  color:#e0f0ff;flex:1;min-width:130px;
+}
+.setting-select option{background:#0a0a1e;color:#e0f0ff}
+.bgm-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+audio{width:100%;margin-top:10px;border-radius:var(--rs);filter:invert(1) hue-rotate(180deg)}
+
+/* ===================================================
+   3. 準備画面
+   =================================================== */
+#prepare-screen{align-items:stretch;background:var(--bg)}
+.prepare-body{flex:1;padding:18px;padding-right:6px;padding-bottom:110px;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(0,245,255,.4) rgba(0,245,255,.06);width:100%}
+.prepare-body::-webkit-scrollbar{width:6px;display:block}
+.prepare-body::-webkit-scrollbar-track{background:rgba(0,245,255,.05);border-radius:3px}
+.prepare-body::-webkit-scrollbar-thumb{background:rgba(0,245,255,.35);border-radius:3px}
+.prepare-body::-webkit-scrollbar-thumb:hover{background:rgba(0,245,255,.6)}
+
+.upload-area{
+  border:2px dashed rgba(0,245,255,.3);
+  border-radius:var(--r);padding:28px;text-align:center;cursor:pointer;
+  background:rgba(0,245,255,.03);margin-bottom:18px;
+  transition:border-color .2s,background .2s,box-shadow .2s;
+}
+.upload-area:hover,.upload-area.dragover{
+  border-color:var(--c);background:rgba(0,245,255,.07);
+  box-shadow:0 0 20px rgba(0,245,255,.15);
+}
+.upload-icon{font-size:2rem;margin-bottom:6px}
+.upload-area p{color:rgba(255,255,255,.5);font-size:.9rem}
+.upload-area strong{color:var(--c);text-shadow:0 0 8px var(--c)}
+.prepare-count{text-align:center;font-size:.82rem;color:rgba(0,245,255,.6);margin-bottom:12px;letter-spacing:.1em}
+
+/* 通常グリッド */
+.thumb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px}
+@media(max-width:480px){.thumb-grid{grid-template-columns:repeat(3,1fr);gap:8px}}
+
+/* 入れ替えモード：2列縮小＋右端にスクロール帯 */
+.thumb-grid.reorder-mode{
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  padding-right:52px; /* 右スクロール帯の幅 */
+}
+/* 右端のスクロールガイド帯 */
+.reorder-scroll-guide{
+  position:fixed;right:0;top:0;bottom:0;width:48px;z-index:40;
+  background:linear-gradient(to right,transparent,rgba(0,245,255,.07));
+  border-left:1px solid rgba(0,245,255,.12);
+  display:none;pointer-events:none;
+  flex-direction:column;align-items:center;justify-content:center;gap:8px;
+}
+.reorder-scroll-guide.show{display:flex}
+.rsg-arrow{color:rgba(0,245,255,.5);font-size:1.2rem;animation:scrollBounce 1.2s ease-in-out infinite}
+.rsg-arrow:nth-child(2){animation-delay:.3s}
+.rsg-arrow:nth-child(3){animation-delay:.6s}
+@keyframes scrollBounce{0%,100%{opacity:.3;transform:translateY(0)}50%{opacity:1;transform:translateY(4px)}}
+.thumb-item{position:relative;aspect-ratio:4/3;border-radius:var(--rs);animation:popIn .3s cubic-bezier(.34,1.56,.64,1) both;overflow:visible;touch-action:auto;cursor:default}
+.reorder-mode .thumb-item{cursor:grab;touch-action:none}
+.thumb-item.dragging{opacity:.35;pointer-events:none}
+.thumb-item.drag-over{outline:3px solid var(--c);outline-offset:3px;box-shadow:0 0 20px rgba(0,245,255,.5)}
+.thumb-img{width:100%;height:100%;object-fit:cover;border-radius:var(--rs);display:block;box-shadow:0 0 0 1px rgba(0,245,255,.2),0 4px 16px rgba(0,0,0,.6)}
+.thumb-num{position:absolute;bottom:4px;left:5px;background:rgba(0,245,255,.2);border:1px solid rgba(0,245,255,.4);color:var(--c);font-size:.68rem;font-weight:700;padding:2px 6px;border-radius:5px;text-shadow:0 0 6px var(--c)}
+.thumb-del{position:absolute;top:-8px;right:-8px;width:26px;height:26px;background:var(--m);color:#050510;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;box-shadow:0 0 10px var(--m);border:none;font-family:inherit;z-index:5;transition:transform .15s}
+.thumb-del:active{transform:scale(.82)}
+@keyframes swapFlash{0%{filter:brightness(1)}50%{filter:brightness(2.5)}100%{filter:brightness(1)}}
+.prepare-footer{position:fixed;bottom:0;left:0;right:0;padding:14px 24px;background:linear-gradient(transparent,rgba(5,5,16,.95) 40%);display:flex;justify-content:center;z-index:20}
+.prepare-footer .btn{width:min(300px,80vw);height:68px;font-size:1.2rem}
+
+/* ===================================================
+   4. プレゼン画面
+   =================================================== */
+#present-screen{background:#020208;overflow:hidden}
+
+.present-bar{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;z-index:30;pointer-events:none;background:linear-gradient(rgba(2,2,8,.8),transparent)}
+.present-bar>*{pointer-events:auto}
+.nav-col-left,.nav-col-right{display:flex;flex-direction:row;align-items:center;gap:8px}
+
+.nav-btn{
+  min-width:64px;min-height:64px;
+  border-radius:var(--r);font-size:.82rem;font-weight:700;padding:6px 10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  cursor:pointer;border:none;font-family:inherit;line-height:1.2;transition:transform .12s,box-shadow .15s;
+}
+.nav-btn:active{transform:scale(.88)}
+.nav-back{
+  background:rgba(0,245,255,.08);color:var(--c);
+  border:1px solid rgba(0,245,255,.4);
+  box-shadow:0 0 8px rgba(0,245,255,.2);
+}
+.nav-back:active{box-shadow:0 0 18px rgba(0,245,255,.5)}
+.nav-next{
+  background:rgba(255,230,0,.12);color:var(--y);
+  border:1px solid rgba(255,230,0,.5);
+  box-shadow:0 0 10px rgba(255,230,0,.3);
+}
+.nav-next:active{box-shadow:var(--gy)}
+.nav-home{
+  min-width:52px;min-height:52px;border-radius:50%;
+  background:rgba(255,0,170,.08);color:var(--m);
+  font-size:1.1rem;border:1px solid rgba(255,0,170,.4);
+  cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .12s,box-shadow .15s;
+  box-shadow:0 0 8px rgba(255,0,170,.2);
+}
+.nav-home:active{transform:scale(.85);box-shadow:var(--gm)}
+.nav-count{
+  font-size:.78rem;font-weight:700;color:var(--c);white-space:nowrap;
+  background:rgba(0,245,255,.08);padding:4px 12px;border-radius:20px;
+  border:1px solid rgba(0,245,255,.25);
+  text-shadow:0 0 8px var(--c);letter-spacing:.05em;
+}
+
+/* 画像エリア */
+.img-wrap{position:absolute;top:0;left:0;right:0;bottom:160px;display:flex;align-items:center;justify-content:center;padding:88px 16px 12px}
+.slide-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:var(--r);display:block;box-shadow:0 0 0 1px rgba(0,245,255,.15),0 20px 60px rgba(0,0,0,.8),0 0 40px rgba(0,245,255,.08)}
+.slide-img.do-floatIn{animation:floatIn .6s cubic-bezier(.22,1,.36,1) forwards}
+.slide-img.do-shake{animation:shake .5s ease-in-out}
+
+/* リアクションバー */
+.reaction-bar{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:10px 8px 16px;
+  background:linear-gradient(transparent,rgba(2,2,8,.9) 40%);
+  display:flex;justify-content:center;align-items:flex-end;
+  gap:6px;flex-wrap:nowrap;z-index:20;
+}
+.rbtn{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  flex:1;max-width:80px;min-height:64px;padding:8px 4px;
+  background:rgba(0,245,255,.06);
+  border:1px solid rgba(0,245,255,.25);
+  border-radius:var(--rs);color:#e0f0ff;
+  font-family:inherit;font-weight:700;cursor:pointer;
+  transition:background .12s,box-shadow .12s;
+  position:relative;line-height:1.1;
+  box-shadow:0 0 6px rgba(0,245,255,.1);
+}
+.rbtn:active,.rbtn.lit{
+  background:rgba(0,245,255,.18);
+  border-color:var(--c);
+  box-shadow:0 0 16px rgba(0,245,255,.4),inset 0 0 10px rgba(0,245,255,.1);
+}
+.rbtn.do-pop{animation:bounce .35s cubic-bezier(.34,1.56,.64,1)}
+.rbtn-emoji{font-size:1.4rem;line-height:1}
+.rbtn-label{font-size:.6rem;text-align:center;color:rgba(255,255,255,.75)}
+.rbtn-count{
+  position:absolute;top:-7px;right:-7px;
+  background:var(--m);color:#050510;
+  font-size:.62rem;font-weight:900;min-width:20px;height:20px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;padding:0 3px;
+  box-shadow:0 0 8px var(--m);
+}
+.rbtn-count.do-bump{animation:bounce .3s cubic-bezier(.34,1.56,.64,1)}
+
+/* リアクションボタン 3つ以下：大型表示 */
+.reaction-bar.few-reactions{padding:12px 16px 20px;gap:16px}
+.reaction-bar.few-reactions .rbtn{
+  flex:1;max-width:180px;min-height:100px;padding:14px 8px;
+  border-width:2px;border-radius:var(--r);
+  box-shadow:0 0 14px rgba(0,245,255,.2);
+}
+.reaction-bar.few-reactions .rbtn-emoji{font-size:2.6rem}
+.reaction-bar.few-reactions .rbtn-label{font-size:.9rem}
+.reaction-bar.few-reactions .rbtn-count{
+  min-width:28px;height:28px;border-radius:14px;font-size:.82rem;
+  top:-10px;right:-10px;
+}
+/* スマホ縦向き・少数 */
+@media(max-width:599px) and (orientation:portrait){
+  .reaction-bar.few-reactions{padding:10px 12px 16px;gap:10px}
+  .reaction-bar.few-reactions .rbtn{min-height:84px}
+  .reaction-bar.few-reactions .rbtn-emoji{font-size:2.2rem}
+  .reaction-bar.few-reactions .rbtn-label{font-size:.8rem}
+}
+@media(max-width:599px) and (orientation:landscape){
+  .reaction-bar.few-reactions .rbtn{min-height:68px}
+  .reaction-bar.few-reactions .rbtn-emoji{font-size:1.8rem}
+}
+
+/* img-wrapの下余白を少数ボタン時に増やす */
+.img-wrap.few-reactions{bottom:220px}
+@media(max-width:599px) and (orientation:portrait){
+  .img-wrap.few-reactions{bottom:190px}
+}
+@media(max-width:599px) and (orientation:landscape){
+  .img-wrap.few-reactions{bottom:160px}
+}
+/* スマホ縦向き */
+@media(max-width:599px) and (orientation:portrait){
+  .img-wrap{bottom:140px;padding:82px 12px 8px}
+  .reaction-bar{padding:8px 4px 12px;gap:4px}
+  .rbtn{min-height:56px;padding:6px 2px}
+  .rbtn-emoji{font-size:1.2rem}
+  .rbtn-label{font-size:.55rem}
+  .nav-btn{min-width:58px;min-height:58px}
+}
+@media(max-width:599px) and (orientation:landscape){
+  .img-wrap{bottom:120px;padding:74px 12px 6px}
+  .reaction-bar{padding:6px 4px 10px;gap:3px}
+  .rbtn{min-height:48px;padding:4px 2px}
+  .rbtn-emoji{font-size:1.1rem}
+  .nav-btn{min-width:54px;min-height:54px;font-size:.75rem}
+}
+
+/* ===================================================
+   4.5 レビュー画面（プレゼン終了後の一覧確認）
+   =================================================== */
+#review-screen{background:var(--bg);align-items:stretch}
+
+.review-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:14px;
+  padding:18px;
+  padding-bottom:110px;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  flex:1;width:100%;
+}
+.review-grid::-webkit-scrollbar{display:none}
+@media(max-width:500px){.review-grid{grid-template-columns:repeat(2,1fr);gap:10px;padding:12px;padding-bottom:100px}}
+
+.review-card{
+  background:rgba(0,245,255,.04);
+  border:1px solid rgba(0,245,255,.15);
+  border-radius:var(--r);overflow:hidden;
+  cursor:pointer;transition:box-shadow .2s,border-color .2s;
+  animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both;
+}
+.review-card:active{border-color:var(--c);box-shadow:0 0 18px rgba(0,245,255,.3)}
+
+.review-thumb{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.review-card-body{padding:8px 10px 10px}
+.review-slide-num{font-size:.68rem;color:var(--c);letter-spacing:.08em;margin-bottom:5px;text-shadow:0 0 6px var(--c)}
+.review-reactions{display:flex;flex-wrap:wrap;gap:4px}
+.review-reaction-chip{
+  display:inline-flex;align-items:center;gap:3px;
+  background:rgba(255,0,170,.08);
+  border:1px solid rgba(255,0,170,.25);
+  border-radius:20px;padding:3px 7px;
+  font-size:.7rem;font-weight:700;color:rgba(255,255,255,.8);
+}
+.review-reaction-chip .rrc-count{
+  color:var(--m);font-weight:900;text-shadow:0 0 6px var(--m);
+  font-size:.75rem;
+}
+.review-no-reaction{font-size:.7rem;color:rgba(255,255,255,.3);font-style:italic}
+
+/* 拡大モーダル */
+.review-modal-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(2,2,8,.92);backdrop-filter:blur(8px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;gap:16px;
+  animation:fadeUp .2s ease both;
+}
+.review-modal-img{
+  max-width:100%;max-height:55vh;object-fit:contain;
+  border-radius:var(--r);
+  box-shadow:0 0 0 1px rgba(0,245,255,.2),0 20px 60px rgba(0,0,0,.8);
+}
+.review-modal-reactions{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:500px;
+}
+.review-modal-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(0,245,255,.07);
+  border:1px solid rgba(0,245,255,.3);
+  border-radius:30px;padding:8px 16px;
+  font-size:.95rem;font-weight:700;color:#e0f0ff;
+}
+.review-modal-chip .rmc-count{color:var(--c);font-weight:900;font-size:1.1rem;text-shadow:0 0 8px var(--c)}
+.review-modal-close{
+  position:absolute;top:16px;right:16px;
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,0,170,.15);border:1px solid var(--m);
+  color:var(--m);font-size:1.3rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 10px rgba(255,0,170,.3);
+  font-family:inherit;transition:transform .15s;
+}
+.review-modal-close:active{transform:scale(.85)}
+.review-modal-label{font-size:.75rem;color:rgba(255,255,255,.4);letter-spacing:.1em}
+
+.review-footer{
+  position:fixed;bottom:0;left:0;right:0;
+  padding:14px 24px;
+  background:linear-gradient(transparent,rgba(5,5,16,.95) 40%);
+  display:flex;justify-content:center;z-index:20;
+}
+.review-footer .btn{width:min(300px,80vw);height:68px;font-size:1.2rem}
+
+/* ===================================================
+   5. 結果画面
+   =================================================== */
+#result-screen{background:var(--bg);padding:36px 22px 56px;align-items:center}
+
+.result-head{text-align:center;margin-bottom:24px;animation:fadeUp .5s ease both}
+.result-head-emoji{font-size:2.6rem;margin-bottom:6px}
+.result-head h2{
+  font-size:clamp(1.3rem,5vw,1.9rem);font-weight:900;
+  color:var(--c);text-shadow:0 0 16px var(--c),0 0 40px rgba(0,245,255,.5);
+  letter-spacing:.04em;
+}
+.result-head p{color:rgba(255,255,255,.5);margin-top:4px;font-size:.9rem;letter-spacing:.08em}
+
+.winner-card{
+  background:rgba(255,0,170,.06);
+  border:1px solid var(--m);border-radius:var(--r);
+  padding:22px 28px;text-align:center;
+  box-shadow:0 0 30px rgba(255,0,170,.2),inset 0 0 30px rgba(255,0,170,.05);
+  margin-bottom:20px;width:100%;max-width:380px;
+  animation:popIn .6s .15s cubic-bezier(.34,1.56,.64,1) both;
+}
+.winner-label{font-size:.75rem;font-weight:700;color:var(--m);letter-spacing:.12em;margin-bottom:6px;text-shadow:0 0 8px var(--m)}
+.winner-emoji{font-size:3.5rem;display:block;margin-bottom:6px;filter:drop-shadow(0 0 12px rgba(255,0,170,.6))}
+.winner-name{font-size:1.6rem;font-weight:900;color:#fff;text-shadow:0 0 12px rgba(255,255,255,.4)}
+.winner-count{font-size:.9rem;color:var(--m);margin-top:4px;text-shadow:0 0 8px var(--m)}
+
+.result-list{width:100%;max-width:380px;display:flex;flex-direction:column;gap:8px;margin-bottom:26px;animation:fadeUp .5s .3s ease both}
+.result-item{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(0,245,255,.04);
+  border:1px solid rgba(0,245,255,.1);
+  border-radius:var(--rs);padding:10px 14px;
+}
+.ri-emoji{font-size:1.3rem;width:28px;text-align:center}
+.ri-name{font-size:.9rem;font-weight:700;flex:1;color:rgba(255,255,255,.85)}
+.bar-wrap{flex:2;height:8px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--c),var(--m));border-radius:4px;width:0%;transition:width 1s cubic-bezier(.22,1,.36,1);box-shadow:0 0 6px var(--c)}
+.ri-count{font-size:1rem;font-weight:900;color:var(--c);min-width:28px;text-align:right;text-shadow:0 0 8px var(--c)}
+
+.result-home-wrap{animation:fadeUp .5s .5s ease both}
+.result-home-wrap .btn{width:min(270px,80vw);height:64px;font-size:1.1rem}
+
+/* ===================================================
+   メッセージ機能
+   =================================================== */
+/* 入力モーダル */
+.msg-modal-overlay{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(2,2,8,.85);backdrop-filter:blur(10px);
+  display:flex;align-items:flex-end;justify-content:center;
+  padding:0 0 32px;
+  animation:fadeUp .18s ease both;
+}
+.msg-modal{
+  width:min(480px,92vw);
+  background:rgba(10,10,30,.97);
+  border:1px solid rgba(0,245,255,.35);
+  border-radius:20px 20px 0 0;
+  padding:20px 20px 14px;
+  box-shadow:0 -4px 40px rgba(0,245,255,.15);
+}
+.msg-modal-title{
+  font-size:.78rem;font-weight:700;
+  color:var(--c);letter-spacing:.1em;
+  text-align:center;margin-bottom:12px;
+  text-shadow:0 0 8px var(--c);
+}
+.msg-input{
+  width:100%;background:rgba(0,245,255,.05);
+  border:1px solid rgba(0,245,255,.3);
+  border-radius:12px;padding:12px 14px;
+  color:#e0f0ff;font-family:inherit;font-size:1rem;
+  resize:none;outline:none;line-height:1.5;
+  box-shadow:inset 0 0 8px rgba(0,245,255,.08);
+  transition:border-color .2s;
+}
+.msg-input:focus{border-color:var(--c);box-shadow:inset 0 0 8px rgba(0,245,255,.12),0 0 0 2px rgba(0,245,255,.15)}
+.msg-modal-btns{display:flex;gap:10px;margin-top:10px}
+.msg-modal-btns .btn{flex:1;height:52px;font-size:1rem}
+
+/* スーパーチャット風バナー */
+/* ゆりかごゆれ（上昇しながら左-20°→右+40°→左-40°→右+40°→右0°） */
+@keyframes msgRise{
+  0%  {opacity:0;  transform:translateY(0)      rotate(0deg)   scale(.92)}
+  5%  {opacity:1;  transform:translateY(-2vh)    rotate(-20deg) scale(1)}
+  22% {            transform:translateY(-22vh)   rotate(40deg)}
+  40% {            transform:translateY(-44vh)   rotate(-40deg)}
+  58% {            transform:translateY(-64vh)   rotate(40deg)}
+  76% {opacity:1;  transform:translateY(-80vh)   rotate(-20deg)}
+  100%{opacity:0;  transform:translateY(-96vh)   rotate(0deg)   scale(.95)}
+}
+@keyframes bubbleRise{
+  0%  {opacity:0;  transform:translateY(0)      rotate(0deg)   scale(.8)}
+  6%  {opacity:1;  transform:translateY(-2vh)    rotate(-20deg) scale(1.1)}
+  24% {            transform:translateY(-24vh)   rotate(40deg)  scale(1)}
+  42% {            transform:translateY(-46vh)   rotate(-40deg)}
+  60% {            transform:translateY(-66vh)   rotate(40deg)}
+  78% {opacity:1;  transform:translateY(-82vh)   rotate(-20deg)}
+  100%{opacity:0;  transform:translateY(-96vh)   rotate(0deg)   scale(.9)}
+}
+
+/* メッセージバナー：右寄り */
+.msg-banner{
+  position:fixed;right:56px;
+  bottom:140px;z-index:400;
+  max-width:min(360px,72vw);width:max-content;
+  background:linear-gradient(135deg,rgba(0,245,255,.18),rgba(255,0,170,.18));
+  border:1px solid rgba(0,245,255,.5);
+  border-radius:14px;padding:10px 18px;
+  color:#e0f0ff;font-size:1rem;font-weight:700;
+  box-shadow:0 0 20px rgba(0,245,255,.25),0 0 40px rgba(255,0,170,.15);
+  pointer-events:none;
+  transform-origin:center bottom;
+  animation:msgRise 2.2s linear forwards;
+  display:flex;align-items:center;gap:10px;
+}
+.msg-banner-icon{font-size:1.3rem}
+.msg-banner-text{flex:1;word-break:break-all;line-height:1.4}
+
+/* リアクションバブル：右寄り */
+.reaction-bubble{
+  position:fixed;right:72px;
+  bottom:160px;z-index:400;
+  pointer-events:none;
+  transform-origin:center bottom;
+  animation:bubbleRise 2.2s linear forwards;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+}
+.reaction-bubble-emoji{font-size:2.6rem;filter:drop-shadow(0 0 10px rgba(0,245,255,.6))}
+.reaction-bubble-label{font-size:.7rem;font-weight:700;color:var(--c);text-shadow:0 0 6px var(--c);letter-spacing:.06em}
+
+/* 右端常駐メールバッジ */
+.msg-badge{
+  position:fixed;right:0;top:50%;transform:translateY(-50%);
+  z-index:300;
+  background:linear-gradient(135deg,rgba(0,245,255,.2),rgba(255,0,170,.2));
+  border:1px solid rgba(0,245,255,.5);
+  border-radius:14px 0 0 14px;
+  padding:12px 8px;
+  cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  box-shadow:-4px 0 20px rgba(0,245,255,.15);
+  transition:background .2s;
+  -webkit-tap-highlight-color:transparent;
+}
+.msg-badge:active{background:rgba(0,245,255,.3)}
+.msg-badge-icon{font-size:1.5rem}
+.msg-badge-count{
+  font-size:.65rem;font-weight:900;
+  background:var(--m);color:#050510;
+  border-radius:10px;padding:1px 6px;
+  min-width:18px;text-align:center;
+  box-shadow:0 0 8px var(--m);
+}
+
+/* メッセージ一覧パネル */
+.msg-panel-overlay{
+  position:fixed;inset:0;z-index:700;
+  background:rgba(2,2,8,.88);backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  animation:fadeUp .18s ease both;
+}
+.msg-panel{
+  width:min(460px,92vw);max-height:72vh;
+  background:rgba(10,10,30,.98);
+  border:1px solid rgba(0,245,255,.35);
+  border-radius:20px;padding:0;
+  box-shadow:0 0 40px rgba(0,245,255,.15);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.msg-panel-header{
+  padding:16px 18px;
+  border-bottom:1px solid rgba(0,245,255,.15);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.msg-panel-title{font-size:.9rem;font-weight:700;color:var(--c);letter-spacing:.1em;text-shadow:0 0 8px var(--c)}
+.msg-panel-close{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,0,170,.15);border:1px solid var(--m);
+  color:var(--m);font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-family:inherit;
+}
+.msg-panel-list{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--c) transparent}
+.msg-panel-item{
+  background:rgba(0,245,255,.06);
+  border:1px solid rgba(0,245,255,.2);
+  border-radius:12px;padding:12px 14px;
+  color:#e0f0ff;font-size:.92rem;line-height:1.5;
+}
+.msg-panel-meta{font-size:.68rem;color:rgba(0,245,255,.5);margin-bottom:4px;letter-spacing:.06em}
+.msg-panel-empty{color:rgba(255,255,255,.35);font-size:.9rem;text-align:center;padding:24px 0}
+
+/* ===================================================
+   コンフェッティ
+   =================================================== */
+.confetti-piece{position:fixed;pointer-events:none;z-index:1000;animation:confettiFall linear forwards;border-radius:2px}
+
+/* ===================================================
+   縦向き警告オーバーレイ
+   =================================================== */
+#portrait-overlay{
+  display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(2,2,8,.95);
+  backdrop-filter:blur(12px);
+  flex-direction:column;align-items:center;justify-content:center;gap:20px;
+  text-align:center;padding:32px;
+}
+#portrait-overlay.show{display:flex}
+.portrait-icon{font-size:4.5rem;animation:rotateTip 2.5s ease-in-out infinite}
+.portrait-title{font-size:1.4rem;font-weight:900;color:var(--c);text-shadow:0 0 16px var(--c);letter-spacing:.06em}
+.portrait-sub{font-size:.95rem;color:rgba(255,255,255,.6);line-height:1.8}
+.portrait-sub strong{color:var(--c)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<!-- 縦向き警告オーバーレイ -->
+<div id="portrait-overlay">
+  <div class="portrait-icon">📱</div>
+  <div class="portrait-title">よこむきにしてね！</div>
+  <div class="portrait-sub">タブレットを よこに まわしてね🎤</div>
+</div>
+<script>
+/* ===== IndexedDB ===== */
+const DB_NAME='KanTanPresenDB',DB_VER=2;
+const S_SET='settings',S_IMG='images',S_REA='reactions';
+function openDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(DB_NAME,DB_VER);
+    r.onupgradeneeded=e=>{
+      const db=e.target.result;
+      if(!db.objectStoreNames.contains(S_SET))db.createObjectStore(S_SET,{keyPath:'id'});
+      if(!db.objectStoreNames.contains(S_IMG))db.createObjectStore(S_IMG,{autoIncrement:true});
+      if(!db.objectStoreNames.contains(S_REA))db.createObjectStore(S_REA,{keyPath:'name'});
+    };
+    r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);
+  });
+}
+async function getSettings(){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const req=db.transaction(S_SET,'readonly').objectStore(S_SET).get('settings');
+    req.onsuccess=()=>res(req.result?.data??{});req.onerror=()=>rej(req.error);
+  });
+}
+async function saveSettings(s){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(S_SET,'readwrite');
+    tx.objectStore(S_SET).put({id:'settings',data:s});
+    tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);
+  });
+}
+async function dbAddImage(base64){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const req=db.transaction(S_IMG,'readwrite').objectStore(S_IMG).add({data:base64});
+    req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error);
+  });
+}
+async function dbGetAllImages(){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const store=db.transaction(S_IMG,'readonly').objectStore(S_IMG);
+    const rA=store.getAll(),rK=store.getAllKeys();
+    let it,ks;
+    rA.onsuccess=()=>{it=rA.result;if(ks!==undefined)done()};
+    rK.onsuccess=()=>{ks=rK.result;if(it!==undefined)done()};
+    rA.onerror=rK.onerror=()=>rej(rA.error);
+    function done(){res(ks.map((k,i)=>({id:k,data:it[i].data})))}
+  });
+}
+async function dbDeleteImage(id){
+  const db=await openDB();
+  return new Promise((res,rej)=>{
+    const req=db.transaction(S_IMG,'readwrite').objectStore(S_IMG).delete(id);
+    req.onsuccess=()=>res();req.onerror=()=>rej(req.error);
+  });
+}
+
+/* ===== アプリ定義 ===== */
+// 絵文字・漢字ラベル・ひらがなラベルを一元管理
+const REACTIONS={
+  '嬉しい': {emoji:'😄', k:'嬉しい',  h:'うれしい'},
+  '悲しい': {emoji:'😢', k:'悲しい',  h:'かなしい'},
+  'ドキドキ':{emoji:'💓', k:'ドキドキ', h:'ドキドキ'},
+  '怒った':  {emoji:'😠', k:'怒った',   h:'おこった'},
+  '安心':    {emoji:'😌', k:'安心',     h:'あんしん'},
+  '恥ずかしい':{emoji:'😳',k:'恥ずかしい',h:'はずかしい'},
+  '好き':    {emoji:'❤️', k:'好き',     h:'すき'},
+  '嫌い':    {emoji:'👎', k:'嫌い',     h:'きらい'},
+  'いいね':  {emoji:'👍', k:'いいね',   h:'いいね'},
+  '気になる':{emoji:'🤔', k:'気になる', h:'きになる'},
+  '怖い':    {emoji:'😨', k:'怖い',     h:'こわい'},
+  'びっくり':{emoji:'😲', k:'びっくり', h:'びっくり'},
+  '欲しい':  {emoji:'🌟', k:'欲しい',   h:'ほしい'},
+};
+// 後方互換用（絵文字のみ参照箇所向け）
+const EMOJI=Object.fromEntries(Object.entries(REACTIONS).map(([k,v])=>[k,v.emoji]));
+// モードに応じたラベルを返す
+function rLabel(name){
+  const r=REACTIONS[name];
+  if(!r)return name;
+  return state.settings.mode==='kanji'?r.k:r.h;
+}
+const DEF_R=['嬉しい','悲しい','ドキドキ','怒った','安心','恥ずかしい'];
+// 追加候補：デフォルト6つ＋その他7つ、全13種
+const CAND_R=['嬉しい','悲しい','ドキドキ','怒った','安心','恥ずかしい','好き','嫌い','いいね','気になる','怖い','びっくり','欲しい'];
+const TXT={
+  k:{start:'スタート',settings:'設定',back:'戻る',next:'進む',home:'🏠',prepare:'じゅんび',remaining:'あと{n}まい',add:'追加',bgmDel:'BGM削除',modeLabel:'漢字モード',reactionTitle:'リアクション設定（最大6つ）',bgmTitle:'BGM設定',msgTitle:'メッセージ機能',msgLabel:'メッセージ機能を使う',cand:'-- 追加候補 --',resultTitle:'プレゼン 終わったよ！',resultSub:'みんなのリアクション',bestLabel:'いちばん多かったのは…',backToHome:'はじめに戻る',noImg:'画像がありません',uploadHint:'タップして画像を選ぶ',uploadSub:'（最大30枚）',startPresent:'プレゼンをはじめる'},
+  h:{start:'スタート',settings:'せってい',back:'もどる',next:'すすむ',home:'🏠',prepare:'じゅんび',remaining:'あと{n}まい',add:'ついか',bgmDel:'BGMをけす',modeLabel:'かんじモード',reactionTitle:'リアクションのせってい（さいだい6つ）',bgmTitle:'BGMのせってい',msgTitle:'メッセージきのう',msgLabel:'メッセージきのうをつかう',cand:'-- ついかこうほ --',resultTitle:'プレゼン おわったよ！',resultSub:'みんなの リアクション',bestLabel:'いちばん おおかったのは…',backToHome:'はじめにもどる',noImg:'がぞうがありません',uploadHint:'タップして がぞうをえらぶ',uploadSub:'（さいだい30まい）',startPresent:'プレゼンをはじめる'}
+};
+function t(k){const m=state.settings.mode==='kanji'?'k':'h';return TXT[m][k]??k}
+
+const state={
+  settings:{mode:'hiragana',reactions:[...DEF_R],bgm:null,messageEnabled:true},
+  prepareImages:[],
+  present:{currentIndex:0,reactionCounts:{},totalCounts:{},slideCounts:[],bgmAudio:null,messages:[]}
+};
+
+function mk(tag,cls,txt){
+  const e=document.createElement(tag);
+  if(cls)e.className=cls;
+  if(txt!=null)e.textContent=txt;
+  return e;
+}
+
+/* ===== 画面遷移 ===== */
+function show(id){
+  document.querySelectorAll('.thumb-ghost,.msg-modal-overlay,.msg-panel-overlay,.msg-banner').forEach(el=>el.remove());
+  const app=document.getElementById('app');
+  app.innerHTML='';
+  if(id==='start')renderStart(app);
+  else if(id==='settings')renderSettings(app);
+  else if(id==='prepare')renderPrepare(app);
+  else if(id==='present')renderPresent(app);
+  else if(id==='review')renderReview(app);
+  else if(id==='result')renderResult(app);
+}
+
+/* ===== 1. スタート ===== */
+function renderStart(c){
+  const s=mk('div','screen');s.id='start-screen';
+  // コーナー装飾
+  ['tl','tr','bl','br'].forEach(pos=>{const d=mk('div','neon-corner '+pos);s.appendChild(d)});
+  const tw=mk('div','start-title-wrap');
+  const sub=mk('div','start-sub','PRESENTATION APP');
+  const ttl=mk('h1','start-title');
+  ttl.innerHTML='カン<span>♪</span>タン<span>♪</span>セン<span>♫</span>デン<span>！</span>';
+  tw.appendChild(sub);tw.appendChild(ttl);
+  s.appendChild(tw);
+  const bw=mk('div','start-btn-wrap');
+  const sb=mk('button','btn btn-solid-c',t('start'));
+  sb.onclick=()=>show('prepare');
+  const gb=mk('button','btn btn-neon-m',t('settings'));
+  gb.onclick=()=>show('settings');
+  bw.appendChild(sb);bw.appendChild(gb);
+  s.appendChild(bw);c.appendChild(s);
+}
+
+/* ===== 2. 設定 ===== */
+function renderSettings(c){
+  const s=mk('div','screen');s.id='settings-screen';
+  const hd=mk('div','pane-header');
+  const bb=mk('button','btn btn-neon-c',t('back'));
+  bb.onclick=()=>{saveSettings(state.settings);show('start')};
+  hd.appendChild(bb);hd.appendChild(mk('h2',null,t('settings')));
+  s.appendChild(hd);
+  const body=mk('div','pane-body');
+
+  /* モード */
+  const ms=mk('div','section-card');
+  ms.appendChild(mk('h3',null,t('modeLabel')));
+  const tw=mk('div','toggle-wrap');
+  tw.appendChild(mk('span','toggle-label','ひらがな'));
+  const lbl=mk('label','toggle-sw');
+  const inp=mk('input');inp.type='checkbox';
+  inp.checked=(state.settings.mode==='kanji');
+  inp.onchange=()=>{state.settings.mode=inp.checked?'kanji':'hiragana';saveSettings(state.settings);show('settings')};
+  lbl.appendChild(inp);lbl.appendChild(mk('span','toggle-sl'));
+  tw.appendChild(lbl);tw.appendChild(mk('span','toggle-label','漢字'));
+  ms.appendChild(tw);body.appendChild(ms);
+
+  /* リアクション */
+  const rs=mk('div','section-card');
+  rs.appendChild(mk('h3',null,t('reactionTitle')));
+  const chips=mk('div','reaction-chips');
+  rs.appendChild(chips);
+  function renderChips(){
+    chips.innerHTML='';
+    state.settings.reactions.forEach((name,i)=>{
+      const chip=mk('div','chip');
+      chip.appendChild(mk('span',null,EMOJI[name]||'❓'));
+      chip.appendChild(mk('span',null,rLabel(name)));
+      const d=mk('button','chip-del','×');
+      d.onclick=()=>{state.settings.reactions.splice(i,1);saveSettings(state.settings);renderChips();renderCandOptions()};
+      chip.appendChild(d);chips.appendChild(chip);
+    });
+  }
+  renderChips();
+  const ar=mk('div','add-row');
+  const sel=mk('select','setting-select');
+  function renderCandOptions(){
+    sel.innerHTML='';
+    const ph=mk('option');ph.value='';ph.textContent=t('cand');sel.appendChild(ph);
+    CAND_R.forEach(n=>{
+      const o=mk('option');o.value=n;
+      const already=state.settings.reactions.includes(n);
+      o.textContent=(already?'✓ ':'')+EMOJI[n]+' '+rLabel(n);
+      o.disabled=already;
+      o.style.color=already?'#bbb':'';
+      sel.appendChild(o);
+    });
+  }
+  renderCandOptions();
+  const ab=mk('button','btn btn-neon-g',t('add'));
+  ab.style.minWidth='80px';
+  ab.onclick=()=>{
+    if(!sel.value)return;
+    if(state.settings.reactions.length>=6){alert('さいだい6つまでです');return}
+    if(!state.settings.reactions.includes(sel.value)){state.settings.reactions.push(sel.value);saveSettings(state.settings);renderChips();renderCandOptions()}
+    sel.value='';
+  };
+  ar.appendChild(sel);ar.appendChild(ab);rs.appendChild(ar);body.appendChild(rs);
+
+  /* BGM */
+  const bs=mk('div','section-card');
+  bs.appendChild(mk('h3',null,t('bgmTitle')));
+  const br=mk('div','bgm-row');
+  const fi=mk('input');fi.type='file';fi.accept='audio/*';fi.style.display='none';
+  const fb=mk('button','btn btn-neon-c','🎵 ファイルをえらぶ');
+  fb.onclick=()=>fi.click();
+  br.appendChild(fb);br.appendChild(fi);
+  const aud=mk('audio');aud.controls=true;
+  aud.style.display=state.settings.bgm?'block':'none';
+  if(state.settings.bgm)aud.src=state.settings.bgm;
+  const db2=mk('button','btn btn-neon-m',t('bgmDel'));
+  db2.style.display=state.settings.bgm?'inline-flex':'none';
+  db2.onclick=()=>{state.settings.bgm=null;aud.src='';aud.style.display='none';db2.style.display='none';fi.value='';saveSettings(state.settings)};
+  fi.onchange=e=>{
+    const f=e.target.files[0];if(!f)return;
+    const rd=new FileReader();
+    rd.onload=ev=>{state.settings.bgm=ev.target.result;aud.src=state.settings.bgm;aud.style.display='block';db2.style.display='inline-flex';saveSettings(state.settings)};
+    rd.readAsDataURL(f);
+  };
+  bs.appendChild(br);bs.appendChild(aud);bs.appendChild(db2);body.appendChild(bs);
+
+  /* メッセージ機能 */
+  const ms2=mk('div','section-card');
+  ms2.appendChild(mk('h3',null,t('msgTitle')));
+  const tw2=mk('div','toggle-wrap');
+  tw2.appendChild(mk('span','toggle-label','OFF'));
+  const lbl2=mk('label','toggle-sw');
+  const inp2=mk('input');inp2.type='checkbox';
+  inp2.checked=(state.settings.messageEnabled!==false);
+  inp2.onchange=()=>{state.settings.messageEnabled=inp2.checked;saveSettings(state.settings)};
+  lbl2.appendChild(inp2);lbl2.appendChild(mk('span','toggle-sl'));
+  tw2.appendChild(lbl2);tw2.appendChild(mk('span','toggle-label','ON'));
+  const msgDesc=mk('p',null,'ONにすると プレゼン中に ✉️ メッセージを おくれます');
+  msgDesc.style.cssText='font-size:.78rem;color:rgba(255,255,255,.45);margin-top:10px;line-height:1.6';
+  ms2.appendChild(tw2);ms2.appendChild(msgDesc);body.appendChild(ms2);
+
+  s.appendChild(body);c.appendChild(s);
+}
+
+/* ===== 3. 準備 ===== */
+async function renderPrepare(c){
+  const s=mk('div','screen');s.id='prepare-screen';
+  const hd=mk('div','pane-header');
+  const bb=mk('button','btn btn-neon-c',t('back'));
+  bb.onclick=()=>show('start');
+  hd.appendChild(bb);hd.appendChild(mk('h2',null,t('prepare')));
+  s.appendChild(hd);
+
+  const body=mk('div','prepare-body');
+
+  /* アップロードエリア */
+  const ua=mk('div','upload-area');
+  ua.innerHTML='<div class="upload-icon">🖼️</div><p><strong>'+t('uploadHint')+'</strong><br>'+t('uploadSub')+'</p>';
+  const fi=mk('input');fi.type='file';fi.accept='image/*';fi.multiple=true;fi.style.display='none';
+  ua.appendChild(fi);
+  ua.onclick=e=>{if(e.target===fi)return;fi.click()};
+  ua.ondragover=e=>{e.preventDefault();ua.classList.add('dragover')};
+  ua.ondragleave=()=>ua.classList.remove('dragover');
+  ua.ondrop=async e=>{e.preventDefault();ua.classList.remove('dragover');await handleFiles(Array.from(e.dataTransfer.files))};
+  body.appendChild(ua);
+
+  /* 並び替えボタン */
+  const reorderBtn=mk('button','reorder-btn','🔀 じゅんばんをいれかえる');
+  body.appendChild(reorderBtn);
+
+  const cnt=mk('div','prepare-count');
+  body.appendChild(cnt);
+  const grid=mk('div','thumb-grid');grid.id='thumb-grid';
+  body.appendChild(grid);
+  s.appendChild(body);
+
+  /* フッターA：通常（プレゼン開始） */
+  const footNormal=mk('div','prepare-footer');
+  const stb=mk('button','btn btn-solid-c',t('startPresent'));
+  stb.onclick=()=>{if(!state.prepareImages.length){alert(t('noImg'));return}show('present')};
+  footNormal.appendChild(stb);
+  s.appendChild(footNormal);
+
+  /* フッターB：入れ替えモード完了（最初は非表示） */
+  const footDone=mk('div','prepare-footer');
+  footDone.style.display='none';
+  const doneBtn=mk('button','btn btn-neon-g','✅ いれかえ おわり！');
+  footDone.appendChild(doneBtn);
+  s.appendChild(footDone);
+
+  c.appendChild(s);
+
+  try{state.prepareImages=await dbGetAllImages()}catch(e){state.prepareImages=[]}
+
+  let reorderMode=false;
+
+  function enterReorderMode(){
+    reorderMode=true;
+    reorderBtn.classList.add('active');
+    reorderBtn.textContent='🔀 ドラッグでいれかえてね';
+    reorderBtn.style.cssText='font-size:1.2rem;padding:20px;';
+    ua.style.display='none';
+    grid.classList.add('reorder-mode');
+    footNormal.style.display='none';
+    footDone.style.display='';
+    renderThumbs();
+  }
+
+  function exitReorderMode(){
+    reorderMode=false;
+    reorderBtn.classList.remove('active');
+    reorderBtn.textContent='🔀 じゅんばんをいれかえる';
+    reorderBtn.style.cssText='';
+    ua.style.display='';
+    grid.classList.remove('reorder-mode');
+    footNormal.style.display='';
+    footDone.style.display='none';
+    renderThumbs();
+  }
+
+  doneBtn.onclick=exitReorderMode;
+  reorderBtn.onclick=()=>{ if(reorderMode) exitReorderMode(); else enterReorderMode(); };
+
+  renderThumbs();
+  fi.onchange=async e=>{await handleFiles(Array.from(e.target.files));fi.value=''};
+
+  async function handleFiles(files){
+    const imgs=files.filter(f=>f.type.startsWith('image/'));
+    const rem=30-state.prepareImages.length;
+    if(rem<=0){alert('さいだい30まいです');return}
+    for(const f of imgs.slice(0,rem)){
+      const d=await readFile(f);const id=await dbAddImage(d);
+      state.prepareImages.push({id,data:d});
+    }
+    renderThumbs();
+  }
+
+  function renderThumbs(){
+    grid.innerHTML='';
+    cnt.textContent=state.prepareImages.length+' / 30 まい';
+    state.prepareImages.forEach((img,idx)=>{
+      const item=mk('div','thumb-item');
+      item.dataset.idx=String(idx);
+      const im=mk('img','thumb-img');im.src=img.data;im.alt=String(idx+1);
+      item.appendChild(im);
+      item.appendChild(mk('div','thumb-num',String(idx+1)));
+      if(reorderMode){
+        setupDnD(item,idx);
+      } else {
+        const del=mk('button','thumb-del','×');
+        del.onclick=async e=>{e.stopPropagation();await dbDeleteImage(img.id);state.prepareImages.splice(idx,1);renderThumbs()};
+        item.appendChild(del);
+      }
+      grid.appendChild(item);
+    });
+  }
+
+  let dragSrcIdx=null;
+  function cleanGhosts(){document.querySelectorAll('.thumb-ghost').forEach(g=>g.remove())}
+
+  function playSwapSE(){
+    try{
+      const ctx=new(window.AudioContext||window.webkitAudioContext)();
+      const o1=ctx.createOscillator();const g1=ctx.createGain();
+      o1.connect(g1);g1.connect(ctx.destination);
+      o1.type='sine';o1.frequency.setValueAtTime(600,ctx.currentTime);
+      o1.frequency.linearRampToValueAtTime(1200,ctx.currentTime+0.08);
+      g1.gain.setValueAtTime(0.3,ctx.currentTime);
+      g1.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.12);
+      o1.start();o1.stop(ctx.currentTime+0.13);
+      const o2=ctx.createOscillator();const g2=ctx.createGain();
+      o2.connect(g2);g2.connect(ctx.destination);
+      o2.type='sine';o2.frequency.setValueAtTime(900,ctx.currentTime+0.05);
+      o2.frequency.linearRampToValueAtTime(1500,ctx.currentTime+0.13);
+      g2.gain.setValueAtTime(0.2,ctx.currentTime+0.05);
+      g2.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.18);
+      o2.start(ctx.currentTime+0.05);o2.stop(ctx.currentTime+0.2);
+    }catch(e){}
+  }
+
+  function setupDnD(item,idx){
+    item.draggable=true;
+    item.ondragstart=e=>{dragSrcIdx=idx;e.dataTransfer.effectAllowed='move';setTimeout(()=>item.classList.add('dragging'),0)};
+    item.ondragend=()=>{item.classList.remove('dragging');grid.querySelectorAll('.drag-over').forEach(i=>i.classList.remove('drag-over'))};
+    item.ondragover=e=>{e.preventDefault();e.dataTransfer.dropEffect='move';if(dragSrcIdx!==idx)item.classList.add('drag-over')};
+    item.ondragleave=()=>item.classList.remove('drag-over');
+    item.ondrop=e=>{e.preventDefault();item.classList.remove('drag-over');if(dragSrcIdx!==null&&dragSrcIdx!==idx){doSwap(dragSrcIdx,idx);dragSrcIdx=null}};
+
+    item.addEventListener('touchstart',e=>{
+      if(e.touches.length>1)return;
+      const t0=e.touches[0],srcIdx=idx;
+      let ghost=null,moved=false;
+      const r=item.getBoundingClientRect();
+      const offX=t0.clientX-r.left,offY=t0.clientY-r.top;
+      function createGhost(){
+        if(ghost)return;
+        ghost=item.cloneNode(true);ghost.className='thumb-ghost';
+        ghost.style.cssText='position:fixed;pointer-events:none;z-index:300;'+
+          'width:'+r.width+'px;height:'+r.height+'px;border-radius:10px;overflow:hidden;'+
+          'transform:scale(1.15) rotate(2deg);box-shadow:0 0 30px rgba(255,230,0,.8);opacity:.9;transition:none;';
+        document.body.appendChild(ghost);
+        item.style.opacity='.25';item.classList.add('dragging');
+      }
+      function moveGhost(cx,cy){if(!ghost)return;ghost.style.left=(cx-offX)+'px';ghost.style.top=(cy-offY)+'px'}
+      function destroyGhost(){
+        if(ghost){ghost.remove();ghost=null;}
+        item.style.opacity='';item.classList.remove('dragging');
+        grid.querySelectorAll('.drag-over').forEach(i=>i.classList.remove('drag-over'));
+        cleanGhosts();
+      }
+      function onMove(ev){
+        ev.preventDefault();moved=true;
+        const t=ev.touches[0];
+        if(!ghost)createGhost();
+        moveGhost(t.clientX,t.clientY);
+        grid.querySelectorAll('.drag-over').forEach(i=>i.classList.remove('drag-over'));
+        if(ghost)ghost.style.display='none';
+        const el=document.elementFromPoint(t.clientX,t.clientY);
+        if(ghost)ghost.style.display='';
+        const over=el?.closest('.thumb-item');
+        if(over&&over!==item&&!isNaN(parseInt(over.dataset.idx,10)))over.classList.add('drag-over');
+      }
+      function onEnd(ev){
+        cleanup();
+        const t=ev.changedTouches[0];
+        if(ghost)ghost.style.display='none';
+        const el=document.elementFromPoint(t.clientX,t.clientY);
+        destroyGhost();
+        if(moved){const over=el?.closest('.thumb-item');if(over){const ti=parseInt(over.dataset.idx,10);if(!isNaN(ti)&&ti!==srcIdx)doSwap(srcIdx,ti)}}
+      }
+      function onCancel(){cleanup();destroyGhost()}
+      function cleanup(){
+        document.removeEventListener('touchmove',onMove);
+        document.removeEventListener('touchend',onEnd);
+        document.removeEventListener('touchcancel',onCancel);
+      }
+      document.addEventListener('touchmove',onMove,{passive:false});
+      document.addEventListener('touchend',onEnd,{passive:true});
+      document.addEventListener('touchcancel',onCancel,{passive:true});
+    },{passive:true});
+  }
+
+  function doSwap(from,to){
+    const[moved]=state.prepareImages.splice(from,1);
+    state.prepareImages.splice(to,0,moved);
+    playSwapSE();renderThumbs();
+    [from,to].forEach(i=>{
+      const n=Math.min(i,state.prepareImages.length-1);
+      const el=grid.querySelector('[data-idx="'+n+'"]');
+      if(el){el.style.animation='none';requestAnimationFrame(()=>{el.style.animation='swapFlash .45s ease'});}
+    });
+  }
+}
+
+/* ===== 4. プレゼン ===== */
+function renderPresent(c){
+  if(!state.prepareImages.length){show('start');return}
+  state.present.currentIndex=0;
+  state.present.reactionCounts={};
+  state.present.totalCounts={};
+  state.present.slideCounts=state.prepareImages.map(()=>({}));
+  state.present.messages=[];
+  state.settings.reactions.forEach(n=>{state.present.reactionCounts[n]=0;state.present.totalCounts[n]=0});
+
+  const s=mk('div','screen');s.id='present-screen';
+
+  const bar=mk('div','present-bar');
+
+  /* 左側：ホーム＋戻る */
+  const nl=mk('div','nav-col-left');
+  const hb=mk('button','nav-home',t('home'));
+  hb.onclick=()=>{stopBgm();show('start')};
+  const nb=mk('button','nav-btn nav-back');
+  nb.innerHTML='<span style="font-size:1.2rem">◀</span><span>'+t('back')+'</span>';
+  nb.onclick=()=>{if(state.present.currentIndex>0){state.present.currentIndex--;updateSlide()}};
+  nl.appendChild(hb);nl.appendChild(nb);
+
+  /* 右側：残り枚数＋進む */
+  const nr=mk('div','nav-col-right');
+  const nc=mk('div','nav-count');nc.id='nav-count';
+  const nx=mk('button','nav-btn nav-next');
+  nx.innerHTML='<span>'+t('next')+'</span><span style="font-size:1.2rem">▶</span>';
+  nx.onclick=()=>{
+    if(state.present.currentIndex<state.prepareImages.length-1){state.present.currentIndex++;updateSlide()}
+    else{stopBgm();show('review')}
+  };
+  nr.appendChild(nc);nr.appendChild(nx);
+  bar.appendChild(nl);bar.appendChild(nr);s.appendChild(bar);
+
+  const iw=mk('div','img-wrap');
+  const img=mk('img','slide-img');img.id='slide-img';img.alt='スライド';
+  iw.appendChild(img);s.appendChild(iw);
+
+  const rb=mk('div','reaction-bar');rb.id='reaction-bar';
+  s.appendChild(rb);c.appendChild(s);
+
+  buildReactionBtns(rb);
+  updateSlide();
+  startBgm();
+  updateMsgBadge();
+}
+
+function buildReactionBtns(rb){
+  rb.innerHTML='';
+  const few=state.settings.reactions.length<=3;
+  if(few){
+    rb.classList.add('few-reactions');
+    const iw=document.querySelector('.img-wrap');
+    if(iw)iw.classList.add('few-reactions');
+  }
+  state.settings.reactions.forEach(name=>{
+    const b=mk('button','rbtn');b.id='rb_'+name;b.dataset.name=name;
+    b.appendChild(mk('span','rbtn-emoji',EMOJI[name]||'❓'));
+    b.appendChild(mk('span','rbtn-label',rLabel(name)));
+    const cnt=mk('span','rbtn-count','0');cnt.id='rc_'+name;
+    b.appendChild(cnt);
+    const doR=()=>{
+      state.present.reactionCounts[name]=(state.present.reactionCounts[name]||0)+1;
+      state.present.totalCounts[name]=(state.present.totalCounts[name]||0)+1;
+      const si=state.present.currentIndex;
+      if(!state.present.slideCounts[si])state.present.slideCounts[si]={};
+      state.present.slideCounts[si][name]=(state.present.slideCounts[si][name]||0)+1;
+      cnt.textContent=state.present.reactionCounts[name];
+      reAnim(b,'do-pop');reAnim(cnt,'do-bump');
+      const img=document.getElementById('slide-img');
+      if(img)reAnim(img,'do-shake');
+      playBeep();
+      showFloatBubble(EMOJI[name]||'❓', rLabel(name));
+    };
+    b.onclick=doR;
+    b.addEventListener('touchstart',e=>{e.preventDefault();doR()},{passive:false});
+    rb.appendChild(b);
+  });
+
+  /* ✉️ メールボタン（messageEnabled=trueの時のみ） */
+  if(state.settings.messageEnabled!==false){
+    const mb=mk('button','rbtn rbtn-mail');
+    mb.appendChild(mk('span','rbtn-emoji','✉️'));
+    mb.appendChild(mk('span','rbtn-label','メッセージ'));
+    const mc=mk('span','rbtn-count','');mc.id='rc_mail';
+    mb.appendChild(mc);
+    const doMsg=()=>openMsgInput();
+    mb.onclick=doMsg;
+    mb.addEventListener('touchstart',e=>{e.preventDefault();doMsg()},{passive:false});
+    rb.appendChild(mb);
+  }
+}
+
+/* ===== メッセージ機能 ===== */
+function openMsgInput(){
+  document.querySelector('.msg-modal-overlay')?.remove();
+  const ov=mk('div','msg-modal-overlay');
+  const modal=mk('div','msg-modal');
+  modal.appendChild(mk('div','msg-modal-title','✉️ メッセージをおくる'));
+  const ta=mk('textarea','msg-input');
+  ta.rows=3;ta.placeholder='ここにメッセージをかいてね';ta.maxLength=80;
+  modal.appendChild(ta);
+  const btns=mk('div','msg-modal-btns');
+  const cancel=mk('button','btn btn-neon-m','キャンセル');
+  cancel.onclick=()=>ov.remove();
+  const send=mk('button','btn btn-solid-c','おくる ✉️');
+  const doSend=()=>{
+    const txt=ta.value.trim();
+    if(!txt)return;
+    ov.remove();
+    sendMessage(txt);
+  };
+  send.onclick=doSend;
+  ta.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')doSend()});
+  btns.appendChild(cancel);btns.appendChild(send);
+  modal.appendChild(btns);
+  ov.appendChild(modal);
+  ov.addEventListener('click',e=>{if(e.target===ov)ov.remove()});
+  document.body.appendChild(ov);
+  setTimeout(()=>ta.focus(),80);
+}
+
+function showFloatBubble(emoji, label){
+  const b=mk('div','reaction-bubble');
+  b.appendChild(mk('span','reaction-bubble-emoji',emoji));
+  b.appendChild(mk('span','reaction-bubble-label',label));
+  document.body.appendChild(b);
+  b.addEventListener('animationend',()=>b.remove(),{once:true});
+}
+
+function sendMessage(txt){
+  const slide=state.present.currentIndex;
+  state.present.messages.push({text:txt, slide:slide+1, time:Date.now()});
+  // スライド画像シェイク
+  const img=document.getElementById('slide-img');
+  if(img)reAnim(img,'do-shake');
+  playBeep();
+  // バナー表示
+  showMsgBanner(txt);
+  // バッジ更新
+  updateMsgBadge();
+  // メールボタンのカウント更新
+  const mc=document.getElementById('rc_mail');
+  if(mc)mc.textContent=String(state.present.messages.length);
+}
+
+function showMsgBanner(txt){
+  const b=mk('div','msg-banner');
+  b.appendChild(mk('span','msg-banner-icon','✉️'));
+  const t=mk('span','msg-banner-text',txt);
+  b.appendChild(t);
+  document.body.appendChild(b);
+  b.addEventListener('animationend',()=>b.remove(),{once:true});
+}
+
+function updateMsgBadge(){
+  document.querySelectorAll('.msg-badge').forEach(el=>el.remove());
+  if(!state.present.messages.length)return;
+  const badge=mk('div','msg-badge');
+  badge.appendChild(mk('span','msg-badge-icon','✉️'));
+  const cnt=mk('span','msg-badge-count',String(state.present.messages.length));
+  badge.appendChild(cnt);
+  badge.onclick=()=>openMsgPanel();
+  document.body.appendChild(badge);
+}
+
+function openMsgPanel(){
+  document.querySelector('.msg-panel-overlay')?.remove();
+  const ov=mk('div','msg-panel-overlay');
+  const panel=mk('div','msg-panel');
+  const hd=mk('div','msg-panel-header');
+  hd.appendChild(mk('div','msg-panel-title','✉️ もらったメッセージ'));
+  const cl=mk('button','msg-panel-close','×');
+  cl.onclick=()=>ov.remove();
+  hd.appendChild(cl);
+  panel.appendChild(hd);
+  const list=mk('div','msg-panel-list');
+  if(!state.present.messages.length){
+    list.appendChild(mk('div','msg-panel-empty','メッセージはまだありません'));
+  } else {
+    state.present.messages.forEach((m,i)=>{
+      const item=mk('div','msg-panel-item');
+      item.appendChild(mk('div','msg-panel-meta','#'+(i+1)+' · スライド'+m.slide));
+      item.appendChild(mk('div',null,m.text));
+      list.appendChild(item);
+    });
+    // 最新を下にスクロール
+    setTimeout(()=>{list.scrollTop=list.scrollHeight},50);
+  }
+  panel.appendChild(list);
+  ov.appendChild(panel);
+  ov.addEventListener('click',e=>{if(e.target===ov)ov.remove()});
+  document.body.appendChild(ov);
+}
+
+function updateSlide(){
+  const imgs=state.prepareImages,idx=state.present.currentIndex;
+  // 現スライドのカウントをリセット
+  state.settings.reactions.forEach(n=>{state.present.reactionCounts[n]=0});
+  state.settings.reactions.forEach(n=>{
+    const el=document.getElementById('rc_'+n);
+    if(el)el.textContent='0';
+  });
+  const img=document.getElementById('slide-img');
+  if(img){
+    img.classList.remove('do-floatIn','do-shake');
+    void img.offsetWidth;
+    img.src=imgs[idx].data;
+    img.classList.add('do-floatIn');
+    img.addEventListener('animationend',()=>img.classList.remove('do-floatIn'),{once:true});
+  }
+  const nc=document.getElementById('nav-count');
+  if(nc)nc.textContent=t('remaining').replace('{n}',imgs.length-idx-1);
+}
+
+function reAnim(el,cls){
+  el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls);
+  el.addEventListener('animationend',()=>el.classList.remove(cls),{once:true});
+}
+
+function startBgm(){
+  stopBgm();
+  if(!state.settings.bgm)return;
+  try{
+    const a=new Audio(state.settings.bgm);
+    a.loop=true;
+    a.volume=0.4;
+    a.addEventListener('ended',()=>{a.currentTime=0;a.play().catch(()=>{})});
+    a.play().catch(()=>{});
+    state.present.bgmAudio=a;
+  }catch(e){}
+}
+function stopBgm(){if(state.present.bgmAudio){state.present.bgmAudio.pause();state.present.bgmAudio=null}}
+
+let actx=null;
+function playBeep(){
+  try{
+    if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.connect(g);g.connect(actx.destination);
+    o.type='sine';
+    o.frequency.setValueAtTime(600,actx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(900,actx.currentTime+0.08);
+    g.gain.setValueAtTime(0.25,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+0.18);
+    o.start();o.stop(actx.currentTime+0.2);
+  }catch(e){}
+}
+
+/* ===== 4.5 レビュー画面 ===== */
+function renderReview(c){
+  const s=mk('div','screen');s.id='review-screen';
+
+  // ヘッダー
+  const hd=mk('div','pane-header');
+  const hb=mk('button','btn btn-ghost',t('home'));
+  hb.style.minHeight='48px';hb.style.fontSize='.9rem';
+  hb.onclick=()=>show('start');
+  hd.appendChild(hb);
+  const htxt=mk('h2');htxt.textContent='ふりかえり';
+  hd.appendChild(htxt);
+  s.appendChild(hd);
+
+  // グリッド
+  const grid=mk('div','review-grid');
+
+  state.prepareImages.forEach((img,idx)=>{
+    const sc=state.present.slideCounts[idx]||{};
+    const hasReaction=Object.values(sc).some(v=>v>0);
+
+    const card=mk('div','review-card');
+    card.style.animationDelay=(idx*0.04)+'s';
+
+    const thumb=mk('img','review-thumb');
+    thumb.src=img.data;thumb.alt='スライド'+(idx+1);
+    card.appendChild(thumb);
+
+    const body=mk('div','review-card-body');
+    body.appendChild(mk('div','review-slide-num','SLIDE '+(idx+1)));
+
+    const rWrap=mk('div','review-reactions');
+    if(hasReaction){
+      state.settings.reactions.forEach(name=>{
+        const cnt=sc[name]||0;
+        if(cnt===0)return;
+        const chip=mk('div','review-reaction-chip');
+        chip.appendChild(mk('span',null,EMOJI[name]||'❓'));
+        chip.appendChild(mk('span',null,rLabel(name)+' '));
+        const countEl=mk('span','rrc-count',String(cnt));
+        chip.appendChild(countEl);
+        rWrap.appendChild(chip);
+      });
+    } else {
+      rWrap.appendChild(mk('div','review-no-reaction','リアクションなし'));
+    }
+    body.appendChild(rWrap);
+    card.appendChild(body);
+    grid.appendChild(card);
+
+    // タップで拡大モーダル
+    card.onclick=()=>openReviewModal(img.data,idx,sc);
+  });
+
+  s.appendChild(grid);
+
+  // フッター
+  const foot=mk('div','review-footer');
+  const nb=mk('button','btn btn-solid-c','つぎへ ▶');
+  nb.onclick=()=>show('result');
+  foot.appendChild(nb);
+  s.appendChild(foot);
+  c.appendChild(s);
+  updateMsgBadge();
+}
+
+function openReviewModal(imgSrc,idx,sc){
+  // 既存モーダルがあれば削除
+  document.querySelector('.review-modal-overlay')?.remove();
+
+  const overlay=mk('div','review-modal-overlay');
+
+  const closeBtn=mk('button','review-modal-close','×');
+  closeBtn.onclick=()=>overlay.remove();
+  overlay.appendChild(closeBtn);
+
+  overlay.appendChild(mk('div','review-modal-label','SLIDE '+(idx+1)));
+
+  const img=mk('img','review-modal-img');
+  img.src=imgSrc;img.alt='スライド'+(idx+1);
+  overlay.appendChild(img);
+
+  const rWrap=mk('div','review-modal-reactions');
+  const hasAny=Object.values(sc).some(v=>v>0);
+  if(hasAny){
+    state.settings.reactions.forEach(name=>{
+      const cnt=sc[name]||0;
+      const chip=mk('div','review-modal-chip');
+      chip.appendChild(mk('span',null,EMOJI[name]||'❓'));
+      chip.appendChild(mk('span',null,' '+rLabel(name)+' '));
+      chip.appendChild(mk('span','rmc-count',String(cnt)));
+      // カウントがある場合は発光
+      if(cnt>0){chip.style.borderColor='var(--c)';chip.style.boxShadow='0 0 12px rgba(0,245,255,.3)'}
+      rWrap.appendChild(chip);
+    });
+  } else {
+    const none=mk('div',null,'リアクションはありませんでした');
+    none.style.color='rgba(255,255,255,.4)';none.style.fontSize='.9rem';
+    rWrap.appendChild(none);
+  }
+  overlay.appendChild(rWrap);
+
+  // オーバーレイ外タップで閉じる
+  overlay.addEventListener('click',e=>{if(e.target===overlay)overlay.remove()});
+  document.body.appendChild(overlay);
+}
+
+/* ===== 5. 結果 ===== */
+function renderResult(c){
+  /* ランキング発表と同時にメッセージをリセット */
+  state.present.messages=[];
+  document.querySelectorAll('.msg-badge,.reaction-bubble,.msg-banner').forEach(el=>el.remove());
+
+  const s=mk('div','screen');s.id='result-screen';
+  const counts=state.present.totalCounts;
+  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const maxC=entries[0]?.[1]||0;
+  const winner=entries[0];
+
+  const hd=mk('div','result-head');
+  hd.appendChild(mk('div','result-head-emoji','🎉'));
+  hd.appendChild(mk('h2',null,t('resultTitle')));
+  hd.appendChild(mk('p',null,t('resultSub')));
+  s.appendChild(hd);
+
+  if(winner&&winner[1]>0){
+    const wc=mk('div','winner-card');
+    wc.appendChild(mk('div','winner-label',t('bestLabel')));
+    wc.appendChild(mk('span','winner-emoji',EMOJI[winner[0]]||'🏆'));
+    wc.appendChild(mk('div','winner-name',rLabel(winner[0])));
+    wc.appendChild(mk('div','winner-count',winner[1]+' かい！'));
+    s.appendChild(wc);
+  }
+
+  const list=mk('div','result-list');
+  entries.forEach(([name,count])=>{
+    const item=mk('div','result-item');
+    item.appendChild(mk('span','ri-emoji',EMOJI[name]||'❓'));
+    item.appendChild(mk('span','ri-name',rLabel(name)));
+    const bw=mk('div','bar-wrap');
+    const bf=mk('div','bar-fill');
+    bw.appendChild(bf);
+    item.appendChild(bw);
+    item.appendChild(mk('span','ri-count',String(count)));
+    list.appendChild(item);
+    setTimeout(()=>{bf.style.width=maxC>0?Math.round(count/maxC*100)+'%':'0%'},300);
+  });
+  s.appendChild(list);
+
+  const hw=mk('div','result-home-wrap');
+  const hb=mk('button','btn btn-solid-c',t('backToHome'));
+  hb.onclick=()=>{stopConfetti();show('start')};
+  hw.appendChild(hb);s.appendChild(hw);
+  c.appendChild(s);
+  startConfetti();
+}
+
+let cTimer=null;
+const CCOLS=['#00f5ff','#ff00aa','#ffe600','#00ff88','#ffffff','#7700ff','#ff6600'];
+function startConfetti(){
+  stopConfetti();let n=0;
+  function batch(){
+    for(let i=0;i<8;i++){
+      if(n++>80)return;
+      const p=document.createElement('div');p.className='confetti-piece';
+      p.style.cssText='left:'+Math.random()*100+'vw;top:-20px;background:'+CCOLS[n%CCOLS.length]+';width:'+(8+Math.random()*10)+'px;height:'+(8+Math.random()*10)+'px;border-radius:'+(Math.random()>.5?'50%':'2px')+';animation-duration:'+(2.5+Math.random()*2)+'s;animation-delay:'+(Math.random()*.4)+'s';
+      document.body.appendChild(p);
+      p.addEventListener('animationend',()=>p.remove(),{once:true});
+    }
+  }
+  batch();cTimer=setInterval(()=>{if(n>80){stopConfetti();return}batch()},350);
+}
+function stopConfetti(){if(cTimer){clearInterval(cTimer);cTimer=null}document.querySelectorAll('.confetti-piece').forEach(p=>p.remove())}
+
+function readFile(file){
+  return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=()=>rej(r.error);r.readAsDataURL(file)});
+}
+
+/* ===== スマホ/タブレット判定＆向き制御 ===== */
+
+// 短辺が600px以上 → タブレット扱い
+function isTablet(){
+  const minSide=Math.min(window.screen.width,window.screen.height);
+  return minSide>=600;
+}
+
+function isPortrait(){return window.innerHeight>window.innerWidth}
+
+// 縦向き警告オーバーレイの表示・非表示（タブレットのみ使用）
+function checkTabletOrientation(){
+  const overlay=document.getElementById('portrait-overlay');
+  if(!overlay)return;
+  overlay.classList.toggle('show', isPortrait());
+}
+
+async function initOrientation(){
+  const overlay=document.getElementById('portrait-overlay');
+
+  if(isTablet()){
+    // ── タブレット：横向き推奨 ──
+    // まず orientation.lock を試みる
+    let locked=false;
+    try{
+      if(screen.orientation&&screen.orientation.lock){
+        await screen.orientation.lock('landscape');
+        locked=true;
+      }
+    }catch(e){/* iPad Safari などはロック不可 */}
+
+    if(!locked){
+      // ロックできない場合は縦向き時に警告を出す
+      // 文言をタブレット向けに
+      const title=overlay.querySelector('.portrait-title');
+      const sub=overlay.querySelector('.portrait-sub');
+      if(title)title.textContent='よこむきにしてね！';
+      if(sub)sub.innerHTML='このアプリは<strong>よこむき</strong>で<br>つかうよ🎤<br><br>タブレットを よこに まわしてね';
+      checkTabletOrientation();
+      window.addEventListener('resize',checkTabletOrientation);
+      screen.orientation?.addEventListener('change',checkTabletOrientation);
+    }
+  } else {
+    // ── スマホ：縦向きで使う・警告不要 ──
+    // オーバーレイは常に非表示
+    if(overlay) overlay.classList.remove('show');
+    // 横向きになってしまったときだけそっと案内する（強制はしない）
+    function checkSmartphoneOrientation(){
+      const overlay=document.getElementById('portrait-overlay');
+      if(!overlay)return;
+      if(!isPortrait()){
+        // スマホ横向き時のみ「縦向きの方が見やすいよ」案内
+        const title=overlay.querySelector('.portrait-title');
+        const sub=overlay.querySelector('.portrait-sub');
+        if(title)title.textContent='たてむきがおすすめ！';
+        if(sub)sub.innerHTML='このアプリは<strong>たてむき</strong>で<br>つかうと みやすいよ📱<br><br>スマホを たてに もどしてね';
+        overlay.classList.add('show');
+      } else {
+        overlay.classList.remove('show');
+      }
+    }
+    checkSmartphoneOrientation();
+    window.addEventListener('resize',checkSmartphoneOrientation);
+    screen.orientation?.addEventListener('change',checkSmartphoneOrientation);
+  }
+}
+
+/* ===== 初期化 ===== */
+window.addEventListener('DOMContentLoaded',async()=>{
+  // スマホ/タブレット判定して向き制御を初期化
+  initOrientation();
+
+  try{
+    const saved=await getSettings();
+    if(saved&&Object.keys(saved).length>0){
+      state.settings=saved;
+      if(!Array.isArray(state.settings.reactions)||!state.settings.reactions.length)
+        state.settings.reactions=[...DEF_R];
+    } else {
+      await saveSettings(state.settings);
+    }
+  }catch(e){console.error(e)}
+  show('start');
+});
+</script>
+</body>
+</html>
